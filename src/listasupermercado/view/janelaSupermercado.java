@@ -228,7 +228,7 @@ public class janelaSupermercado extends javax.swing.JFrame {
         String produtoNome = jTextFieldProduto.getText();
         int unidade = Integer.parseInt(jTextFieldUnidade.getText());
         
-        try{
+        
             ProdutoController produtoController = new ProdutoController();
             sucesso = produtoController.cadastrarProduto(codigo, produtoNome, unidade);
             
@@ -241,9 +241,7 @@ public class janelaSupermercado extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "Os campos não foram preenchidos corretamente.");
             }
             
-        } catch(Exception e){
-            JOptionPane.showMessageDialog(null, "Erro: "+ e);
-        }
+        
         
     }//GEN-LAST:event_jButtonAdicionarActionPerformed
 

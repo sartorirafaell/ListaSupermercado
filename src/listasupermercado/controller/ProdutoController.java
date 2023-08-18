@@ -12,14 +12,14 @@ public class ProdutoController {
          String codigoStr = String.valueOf(codigo); // Converter o código para uma string
          String unidadeStr = String.valueOf(unidades); // Converter a unidade para uma string
          
-    if (!codigoStr.isEmpty() && validarCodigo(codigoStr) && produtoNome != null && validarNome(produtoNome) && !unidadeStr.isEmpty() && validarUnidade(unidadeStr)) {
+    if (!codigoStr.isEmpty() && validarCodigo(codigoStr) && !produtoNome.equals("") && validarNome(produtoNome) && !unidadeStr.isEmpty() && validarUnidade(unidadeStr)) {
       
         Produto produto = new Produto(codigo, produtoNome, unidades);
         
         return produto.cadastrarProduto(produto);
     }
     else {
-        JOptionPane.showMessageDialog(null, "Complete todos os campos");
+        JOptionPane.showMessageDialog(null, "Complete corretamente todos os campos");
         return false;
     }
     
