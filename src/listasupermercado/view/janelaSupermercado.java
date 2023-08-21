@@ -4,7 +4,6 @@
  * and open the template in the editor.
  */
 package listasupermercado.view;
-import com.sun.xml.internal.fastinfoset.EncodingConstants;
 import java.awt.Graphics;
 import java.awt.Image;
 import javax.swing.ImageIcon;
@@ -23,19 +22,6 @@ public class janelaSupermercado extends javax.swing.JFrame {
      */
     public janelaSupermercado() {
         initComponents();
-    }
-    public void cadastrarProduto(){
-       
-            String codigo = jTextFieldCodProduto.getText();
-            String produtoNome = jTextFieldProduto.getText();
-            String unidade = jTextFieldUnidade.getText();
-            
-            DefaultTableModel tableModel = (DefaultTableModel) jTableProdutos.getModel();
-
-            tableModel.addRow(new Object[] {codigo, produtoNome, unidade});
-        
-       
-       
     }
     
      public void limpaNovoProduto (){
@@ -120,6 +106,11 @@ public class janelaSupermercado extends javax.swing.JFrame {
 
         jButtonExcluir.setFont(new java.awt.Font("Yu Gothic", 1, 12)); // NOI18N
         jButtonExcluir.setText("Excluir Produto");
+        jButtonExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonExcluirActionPerformed(evt);
+            }
+        });
 
         jButtonLimpar.setFont(new java.awt.Font("Yu Gothic", 1, 12)); // NOI18N
         jButtonLimpar.setText("Limpar lista");
@@ -224,30 +215,67 @@ public class janelaSupermercado extends javax.swing.JFrame {
 
     private void jButtonAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAdicionarActionPerformed
         boolean sucesso;
-        int codigo = Integer.parseInt(jTextFieldCodProduto.getText());
-        String produtoNome = jTextFieldProduto.getText();
-        int unidade = Integer.parseInt(jTextFieldUnidade.getText());
+       
         
-        
-            ProdutoController produtoController = new ProdutoController();
-            sucesso = produtoController.cadastrarProduto(codigo, produtoNome, unidade);
+        try{
+            int codigo = Integer.parseInt(jTextFieldCodProduto.getText());
+            String produtoNome = jTextFieldProduto.getText();
+            int unidades = Integer.parseInt(jTextFieldUnidade.getText());
+            
+            if (codigo <= 0 || produtoNome.isEmpty() || unidades <= 0) 
+            {
+                JOptionPane.showMessageDialog(null, "Erro: Complete todos os campos e forneça valores válidos.");
+            }
+            else
+            {
+                ProdutoController produtoController = new ProdutoController();
+                sucesso = produtoController.cadastrarProduto(codigo, produtoNome, unidades);
             
             if(sucesso){
                 JOptionPane.showMessageDialog(null, "O cadastro foi realizado com sucesso.");
-                cadastrarProduto();
+                DefaultTableModel tableModel = (DefaultTableModel) jTableProdutos.getModel();
+
+            tableModel.addRow(new Object[] {codigo, produtoNome, unidades});
                 this.limpaNovoProduto();
                 
-            } else{
+            } else 
+              {
                 JOptionPane.showMessageDialog(null, "Os campos não foram preenchidos corretamente.");
+              }
             }
-            
-        
+    
+        } catch (NumberFormatException e) 
+        {
+            JOptionPane.showMessageDialog(null, "Erro: Os campos de código e unidades devem conter números válidos.");
+        } catch (Exception e) 
+        {
+            JOptionPane.showMessageDialog(null, "Erro: Ocorreu um erro desconhecido.");
+        }
         
     }//GEN-LAST:event_jButtonAdicionarActionPerformed
 
     private void jButtonLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLimparActionPerformed
         limpaNovoProduto();
     }//GEN-LAST:event_jButtonLimparActionPerformed
+
+    private void jButtonExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonExcluirActionPerformed
+    int selectedRow = jTableProdutos.getSelectedRow();
+    if (selectedRow != -1) {
+        DefaultTableModel model = (DefaultTableModel) jTableProdutos.getModel();
+        int codigo = (Integer) jTableProdutos.getValueAt(selectedRow, 0);
+
+        ProdutoController produtoController = new ProdutoController();
+        boolean sucesso = produtoController.excluirProduto(codigo);
+
+        if (sucesso) {
+            model.removeRow(selectedRow);
+        } else {
+            JOptionPane.showMessageDialog(null, "Falha ao excluir o produto.");
+        }
+    } else {
+        JOptionPane.showMessageDialog(null, "Selecione um código do produto a ser excluído.");
+    }
+    }//GEN-LAST:event_jButtonExcluirActionPerformed
 
     /**
      * @param args the command line arguments

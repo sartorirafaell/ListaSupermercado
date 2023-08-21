@@ -2,56 +2,86 @@
 package listasupermercado.controller;
 
 
+
 import javax.swing.JOptionPane;
 import listasupermercado.model.Produto;
 
 
 public class ProdutoController {
+    private int codigo;
+    private String produtoNome;
+    private int unidades;
+
+    public ProdutoController(int codigo, String produtoNome, int unidades) {
+        this.codigo = codigo;
+        this.produtoNome = produtoNome;
+        this.unidades = unidades;
+    }
+
+    public ProdutoController() {
+    }
+    
+    
+
+    public int getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(int codigo) {
+        this.codigo = codigo;
+    }
+
+    public String getProdutoNome() {
+        return produtoNome;
+    }
+
+    public void setProdutoNome(String produtoNome) {
+        this.produtoNome = produtoNome;
+    }
+
+    public int getUnidades() {
+        return unidades;
+    }
+
+    public void setUnidades(int unidades) {
+        this.unidades = unidades;
+    }
+           
  
-     public boolean cadastrarProduto(int codigo, String produtoNome, int unidades) {
-         String codigoStr = String.valueOf(codigo); // Converter o código para uma string
-         String unidadeStr = String.valueOf(unidades); // Converter a unidade para uma string
-         
-    if (!codigoStr.isEmpty() && validarCodigo(codigoStr) && !produtoNome.equals("") && validarNome(produtoNome) && !unidadeStr.isEmpty() && validarUnidade(unidadeStr)) {
-      
-        Produto produto = new Produto(codigo, produtoNome, unidades);
+  public boolean cadastrarProduto(int codigo, String produtoNome, int unidades) {
+        if (codigo <= 0 || unidades <= 0 || produtoNome.isEmpty()) {
+            // Validação de entrada falhou
+            return false;
+        }
         
-        return produto.cadastrarProduto(produto);
+        if(validarCodigo(codigo)  && validarUnidade(unidades)) {
+             Produto produto = new Produto(codigo, produtoNome, unidades);
+        return produto.cadastrarProduto(codigo, produtoNome, unidades);
+        }
+        else{
+        
+         return false;
+        }
+   
     }
-    else {
-        JOptionPane.showMessageDialog(null, "Complete corretamente todos os campos");
-        return false;
+
+    public boolean validarCodigo(int codigo) {
+        String cod = String.valueOf(codigo);
+        return cod.matches("\\d+"); // Usar uma expressão regular para verificar se é um número
     }
+
+
+    public boolean validarUnidade(int unidades) {
+        String un = String.valueOf(unidades);
+        return un.matches("\\d+"); // Usar uma expressão regular para verificar se é um número
+    }
+    
+    public boolean excluirProduto(int codigo){
+          this.codigo = codigo;
+          return true;
+      }
     
 }
 
-public boolean validarCodigo(String codigo) {
-    for (int i = 0; i < codigo.length(); i++) {
-        if (!Character.isDigit(codigo.charAt(i))) {
-            JOptionPane.showMessageDialog(null, "Insira um código apenas com números inteiros");
-            return false;
-        }
-    }
-    return true;
-}
 
-public boolean validarNome(String produtoNome) {
-    for (int i = 0; i < produtoNome.length(); i++) {
-        if (Character.isDigit(produtoNome.charAt(i))) {
-            JOptionPane.showMessageDialog(null, "Insira um nome sem números");
-            return false;
-        }
-    }
-    return true;
-}
 
-public boolean validarUnidade(String unidade) {
-    for (int i = 0; i < unidade.length(); i++) {
-        if (!Character.isDigit(unidade.charAt(i))) {
-            JOptionPane.showMessageDialog(null, "Insira um código apenas com números inteiros");
-            return false;
-        }
-    }
-    return true;
-}
-}

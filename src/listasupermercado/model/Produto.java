@@ -14,10 +14,20 @@ public class Produto {
         this.unidades = unidades;
     }
     
-    public boolean cadastrarProduto(Produto produto){
+    
+    
+      public boolean cadastrarProduto(int codigo, String produtoNome, int unidades) {
+        this.codigo = codigo;
+        this.produtoNome = produtoNome;
+        this.unidades = unidades;
         
         return true;
+        
     }
+      public boolean excluirProduto(int codigo){
+          this.codigo = codigo;
+          return true;
+      }
 
     public int getCodigo() {
         return codigo;
